@@ -1,0 +1,11 @@
+# Agent: Formularz → Google Sheets
+
+Rozwiązuje problem ręcznego przepisywania danych z formularzy.
+
+## Jak działa (w skrócie)
+1) Użytkownik wypełnia formularz
+2) Agent pobiera dane z API
+3) Dane trafiają automatycznie do Google Sheets
+
+## Efekt
+Dane są natychmiast gotowe do raportu i dalszych automatyzacji.
