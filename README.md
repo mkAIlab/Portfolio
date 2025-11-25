@@ -14,9 +14,9 @@ Każdy agent ma swój osobny folder z:
 
 ## Spis agentów
 
-1. [Form-to-Sheets — automatyczne zaczytywanie formularzy do Google Sheets](form-to-sheets/README.md)  
-   - Wejście: e-maile z załącznikami (PDF/jpg) + wiadomości z Telegrama  
-   - Wyjście: zapis plików na Google Drive + uporządkowany wiersz w Google Sheets  
+1. [Form-to-Sheets — automatyczne zaczytywanie faktur do Google Sheets](form-to-sheets/README.md)  
+   - Wejście: e-maile z fakturami w załączniku (PDF/JPG) + faktury przesyłane przez Telegram  
+   - Wyjście: zapis plików na Google Drive + uporządkowany wiersz z danymi faktury w Google Sheets  
 
 *(Kolejni agenci będą dopisywani w miarę ich tworzenia.)*
 
