@@ -14,7 +14,7 @@ Każdy agent ma swój osobny folder z:
 
 ## Spis agentów
 
-1. [Form-to-Sheets — automatyczne zaczytywanie faktur do Google Sheets](form-to-sheets/README.md)  
+1. [Agent AI Księgowy — analiza faktur, kosztów, sprzedaży](form-to-sheets/README.md)  
    - Wejście: e-maile z fakturami w załączniku (PDF/JPG) + faktury przesyłane przez Telegram  
    - Wyjście: zapis plików na Google Drive + uporządkowany wiersz z danymi faktury w Google Sheets  
 
