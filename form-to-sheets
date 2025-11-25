@@ -1,11 +1,114 @@
-# Agent: Formularz → Google Sheets
+# Form-to-Sheets — agent do zaczytywania formularzy do Google Sheets
 
-Rozwiązuje problem ręcznego przepisywania danych z formularzy.
+Agent, który automatycznie zbiera dane z formularzy (PDF / skany / zdjęcia) i zapisuje je jako uporządkowane wiersze w Google Sheets.
 
-## Jak działa (w skrócie)
-1) Użytkownik wypełnia formularz
-2) Agent pobiera dane z API
-3) Dane trafiają automatycznie do Google Sheets
+---
 
-## Efekt
-Dane są natychmiast gotowe do raportu i dalszych automatyzacji.
+## 1. Problem
+
+Do firmy regularnie spływają formularze:
+
+- jako **załączniki w e-mailach** (PDF / JPG),
+- jako **pliki / zdjęcia wysyłane na Telegramie**.
+
+Ktoś musi ręcznie:
+
+- pobrać załącznik,
+- odczytać dane z formularza,
+- przepisać je do arkusza Google,
+- zapisać plik w odpowiednim folderze na Google Drive.
+
+To zajmuje czas, jest podatne na błędy i trudno to skalować.
+
+---
+
+## 2. Rozwiązanie (agent)
+
+Stworzyłem agenta w **n8n**, który:
+
+1. Odbiera wiadomości:
+   - z **Gmaila** (nowe e-maile z załącznikami),
+   - z **Telegrama** (nowe pliki / zdjęcia).
+2. Zapisuje załączniki na **Google Drive** we właściwym katalogu.
+3. Używa **OpenAI (Vision + Information Extractor)** do:
+   - odczytania treści formularza z PDF/obrazu,
+   - wyciągnięcia konkretnych pól (np. imię, nazwisko, e-mail, data, kwota itd.).
+4. Zapisuje dane jako **nowy wiersz** w **Google Sheets**.
+5. (Opcjonalnie) Może odesłać podsumowanie / potwierdzenie przez e-mail lub Telegram.
+
+Efekt: cały proces **od pliku do wiersza w arkuszu** jest zautomatyzowany.
+
+---
+
+## 3. Architektura
+
+### Workflow w n8n
+
+> (Screen zostanie dodany jako `workflow.png`)
+
+Główne elementy scenariusza:
+
+- **Gmail Trigger** – reaguje na nowe e-maile z załącznikami.
+- **Telegram Trigger** – reaguje na nowe wiadomości z plikami.
+- **Filtry** – przepuszczają tylko wiadomości z załącznikami.
+- **Zapisywanie plików na Google Drive**.
+- **Loop Over Items** – przetwarza każdy załącznik osobno.
+- **OpenAI (Vision + Information Extractor)** – odczyt i ekstrakcja danych z formularza.
+- **Google Sheets** – dopisanie nowego wiersza z wyciągniętymi polami.
+- (Opcjonalnie) **Gmail / Telegram** – wysyłka podsumowania.
+
+**Stack technologiczny:**
+
+- n8n (self-hosted)
+- Gmail API
+- Telegram Bot API
+- Google Drive + Google Sheets
+- OpenAI (Chat/Agents + Vision)
+
+---
+
+## 4. Przepływ krok po kroku
+
+1. Użytkownik wysyła formularz:
+   - jako załącznik w e-mailu **lub**
+   - jako plik / zdjęcie na Telegramie.
+2. Agent zapisuje plik na **Google Drive**.
+3. OpenAI odczytuje zawartość formularza i zamienia ją na ustrukturyzowane dane.
+4. Dane trafiają jako **nowy wiersz** do **Google Sheets**.
+5. Plik źródłowy jest bezpiecznie przechowywany na Google Drive (np. do audytu lub archiwum).
+
+---
+
+## 5. Efekt biznesowy
+
+- ⏱ **Oszczędność czasu** – rezygnacja z ręcznego przepisywania danych.
+- ✅ **Mniej błędów** – ustandaryzowany format danych, brak literówek.
+- 📊 **Dane od razu gotowe do analizy** – można je raportować w Excelu, Looker Studio itd.
+- 🔁 **Skalowalność** – łatwo dodać kolejne formularze / źródła (kolejne maile, inne kanały).
+
+---
+
+## 6. Jak uruchomić (wysoki poziom)
+
+> Uwaga: to portfolio, nie gotowy produkt „one-click install”. Poniżej opis kroków wdrożenia.
+
+1. Zainstaluj i uruchom **n8n** (np. w Dockerze).
+2. Skonfiguruj integracje:
+   - konto **Gmail** (OAuth / API),
+   - **bota Telegram**,
+   - dostęp do **Google Drive** i **Google Sheets**,
+   - klucz API **OpenAI**.
+3. Zaimportuj workflow z pliku `workflow.json`.
+4. Ustaw zmienne środowiskowe zgodnie z `env.example`.
+5. Włącz workflow i przetestuj na przykładowym formularzu.
+
+---
+
+## 7. Pliki w tym folderze
+
+- `README.md` – opis agenta (ten plik),
+- `workflow.json` – eksport scenariusza n8n,
+- `env.example` – przykładowa konfiguracja zmiennych środowiskowych,
+- `workflow.png` – screen workflow z n8n,
+- `demo.gif` – (opcjonalnie) krótka demonstracja działania agenta,
+- `sheet.png` – (opcjonalnie) przykład wypełnionego arkusza Google.
