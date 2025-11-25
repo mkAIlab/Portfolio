@@ -1,0 +1,124 @@
+# Form-to-Sheets — agent do zaczytywania faktur do Google Sheets
+
+Agent, który automatycznie zbiera dane z faktur (PDF / skany / zdjęcia) i zapisuje je jako uporządkowane wiersze w Google Sheets.
+
+---
+
+## 1. Problem
+
+Do firmy regularnie spływają **faktury**:
+
+- jako **załączniki w e-mailach** (PDF / JPG),
+- jako **pliki / zdjęcia wysyłane na Telegramie**.
+
+Ktoś musi ręcznie:
+
+- pobrać załącznik,
+- odczytać dane z faktury,
+- przepisać je do arkusza (np. rejestru VAT / kosztów),
+- zapisać plik w odpowiednim folderze na Google Drive.
+
+To zajmuje czas, jest podatne na błędy i trudno to skalować przy większej liczbie dokumentów.
+
+---
+
+## 2. Rozwiązanie (agent)
+
+Stworzyłem agenta w **n8n**, który:
+
+1. Odbiera wiadomości:
+   - z **Gmaila** (nowe e-maile z fakturami w załączniku),
+   - z **Telegrama** (nowe pliki / zdjęcia faktur).
+2. Zapisuje faktury na **Google Drive** we właściwym katalogu.
+3. Używa **OpenAI (Vision + Information Extractor)** do:
+   - odczytania treści faktury z PDF/obrazu,
+   - wyciągnięcia konkretnych pól, np.:
+     - numer faktury,
+     - data wystawienia,
+     - data sprzedaży,
+     - kontrahent (nazwa),
+     - NIP,
+     - kwota netto / VAT / brutto,
+     - forma płatności,
+     - termin płatności.
+4. Zapisuje dane jako **nowy wiersz** w **Google Sheets** (np. rejestr faktur).
+5. (Opcjonalnie) Może odesłać podsumowanie / potwierdzenie przez e-mail lub Telegram.
+
+Efekt: cały proces **od faktury do wiersza w arkuszu** jest zautomatyzowany.
+
+---
+
+## 3. Architektura
+
+### Workflow w n8n
+
+> (Screen zostanie dodany jako `workflow.png`)
+
+Główne elementy scenariusza:
+
+- **Gmail Trigger** – reaguje na nowe e-maile z fakturami.
+- **Telegram Trigger** – reaguje na nowe wiadomości z fakturami (plik/zdjęcie).
+- **Filtry** – przepuszczają tylko wiadomości z załącznikami.
+- **Zapisywanie plików na Google Drive** (np. wg roku/miesiąca).
+- **Loop Over Items** – przetwarza każdą fakturę osobno.
+- **OpenAI (Vision + Information Extractor)** – odczyt i ekstrakcja danych z faktury.
+- **Google Sheets** – dopisanie nowego wiersza z danymi faktury.
+- (Opcjonalnie) **Gmail / Telegram** – wysyłka podsumowania.
+
+**Stack technologiczny:**
+
+- n8n (self-hosted)
+- Gmail API
+- Telegram Bot API
+- Google Drive + Google Sheets
+- OpenAI (Chat/Agents + Vision)
+
+---
+
+## 4. Przepływ krok po kroku
+
+1. Użytkownik otrzymuje fakturę:
+   - jako załącznik w e-mailu **lub**
+   - jako plik / zdjęcie na Telegramie.
+2. Agent zapisuje fakturę na **Google Drive** w odpowiednim katalogu (np. `Faktury/2025/11`).
+3. OpenAI odczytuje treść faktury i zamienia ją na ustrukturyzowane dane (JSON).
+4. Dane trafiają jako **nowy wiersz** do **Google Sheets**:
+   - każda kolumna to jedno pole faktury (np. data, numer, NIP, kwoty).
+5. Plik źródłowy (faktura) jest bezpiecznie przechowywany na Google Drive i można go łatwo odnaleźć.
+
+---
+
+## 5. Efekt biznesowy
+
+- ⏱ **Oszczędność czasu** – brak ręcznego przepisywania danych z faktur.
+- ✅ **Mniej błędów** – ustandaryzowany format danych, mniej pomyłek w kwotach/NIP-ach.
+- 📊 **Dane od razu gotowe do analizy** – można robić raporty kosztów, cashflow, VAT itd.
+- 🧾 **Lepszy porządek w dokumentach** – faktury są zapisane w jednym systemie (Drive + Sheets).
+- 🔁 **Skalowalność** – łatwo dodać kolejne skrzynki mailowe, kanały czy typy faktur.
+
+---
+
+## 6. Jak uruchomić (wysoki poziom)
+
+> Uwaga: to portfolio, nie gotowy produkt „one-click install”. Poniżej opis kroków wdrożenia.
+
+1. Zainstaluj i uruchom **n8n** (np. w Dockerze).
+2. Skonfiguruj integracje:
+   - konto **Gmail** (OAuth / API),
+   - **bota Telegram**,
+   - dostęp do **Google Drive** i **Google Sheets**,
+   - klucz API **OpenAI**.
+3. Zaimportuj workflow z pliku `workflow.json`.
+4. Ustaw zmienne środowiskowe zgodnie z `env.example` (np. ID arkusza, ID folderu na Drive).
+5. Włącz workflow i przetestuj na przykładowych fakturach w różnych formatach.
+
+---
+
+## 7. Pliki w tym folderze
+
+- `README.md` – opis agenta (ten plik),
+- `workflow.json` – eksport scenariusza n8n,
+- `env.example` – przykładowa konfiguracja zmiennych środowiskowych,
+- `workflow.png` – screen workflow z n8n,
+- `demo.gif` – (opcjonalnie) krótka demonstracja działania agenta,
+- `sheet.png` – (opcjonalnie) przykład wypełnionego arkusza Google z danymi faktur.
