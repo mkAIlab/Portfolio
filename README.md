@@ -1,17 +1,34 @@
-# Portfolio
-Publiczne portfolio moich agentów AI – opisy, demo i efekty biznesowe.
-
 # mkAIlab — portfolio agentów AI
+
+Publiczne portfolio moich agentów AI – opisy, demo i efekty biznesowe.
 
 To repo służy do katalogowania agentów AI, które tworzę w praktyce.
 
-Każdy agent ma swoją osobną podstronę/folder z:
-- opisem problemu
-- krótką architekturą (jak działa)
-- demonstracją (screen / GIF / opis działania)
-
-
+Każdy agent ma swój osobny folder z:
+- opisem problemu, który rozwiązuje,
+- krótką architekturą (jak działa technicznie),
+- demonstracją (screen / GIF / opis działania),
+- opisem efektu biznesowego.
 
 ---
 
-To repo będzie rozbudowywane wraz z postępem nauki i budowaniem kolejnych agentów.
+## Spis agentów
+
+1. [Form-to-Sheets — automatyczne zaczytywanie formularzy do Google Sheets](form-to-sheets/README.md)  
+   - Wejście: e-maile z załącznikami (PDF/jpg) + wiadomości z Telegrama  
+   - Wyjście: zapis plików na Google Drive + uporządkowany wiersz w Google Sheets  
+
+*(Kolejni agenci będą dopisywani w miarę ich tworzenia.)*
+
+---
+
+## Status i demo
+
+To repo jest rozwijane stopniowo wraz z budowaniem kolejnych agentów.
+
+- Część agentów ma tylko opis i screeny (case study),
+- Wybrane projekty mają **demo** w postaci GIF-ów lub screenów,
+- Dostęp do „żywych” instancji agentów (n8n, boty itp.) może być ograniczony lub uruchamiany tylko na potrzeby prezentacji.
+
+---
+
