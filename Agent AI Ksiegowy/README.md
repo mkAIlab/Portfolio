@@ -1,6 +1,7 @@
-# Form-to-Sheets — agent do zaczytywania faktur do Google Sheets
+# Agent AI Ksiegowy — analiza faktur, kosztów, sprzedaży
 
-Agent, który automatycznie zbiera dane z faktur (PDF / skany / zdjęcia) i zapisuje je jako uporządkowane wiersze w Google Sheets.
+Pierwszy moduł Agenta AI Księgowego: automatyczne zaczytywanie danych z faktur (PDF / skany / zdjęcia) i zapisywanie ich jako uporządkowane wiersze w Google Sheets.
+
 
 ---
 
