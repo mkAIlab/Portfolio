@@ -14,7 +14,7 @@ Każdy agent ma swój osobny folder z:
 
 ## Spis agentów
 
-1. [Agent AI Księgowy — analiza faktur, kosztów, sprzedaży](Agent-AI-Księgowy/README.md)  
+1. [Agent AI Ksiegowy — analiza faktur, kosztów, sprzedaży](Agent%20AI%20Ksiegowy/README.md)
    - Wejście: e-maile z fakturami w załączniku (PDF/JPG) + faktury przesyłane przez Telegram  
    - Wyjście: zapis plików na Google Drive + uporządkowany wiersz z danymi faktury w Google Sheets  
 
